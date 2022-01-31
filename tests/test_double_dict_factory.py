@@ -1,3 +1,6 @@
+from double_dict_factory import TwoKeyDictFactory, ITwoKeyDictFactory
+
+
 def factory1():
     return 10
 
@@ -7,8 +10,6 @@ def factory2():
 
 
 def test_create():
-    from double_dict_factory import TwoKeyDictFactory, ITwoKeyDictFactory
-
     two_key_dict: ITwoKeyDictFactory[int, int, int] = TwoKeyDictFactory()
     two_key_dict.add_factory(1, factory1)
     two_key_dict.add_factory(2, factory2)
@@ -18,3 +19,21 @@ def test_create():
     assert two_key_dict.get(10, 2) == 20
 
     a = 1
+
+
+class DummyClassFce2:
+    index = 0
+
+    def __init__(self):
+        DummyClassFce2.index += 1
+        self.index = DummyClassFce2.index
+
+
+def test_created_once():
+    two_key_dict = TwoKeyDictFactory()
+    two_key_dict.add_factory(10, DummyClassFce2)
+    two_key_dict.create(1)
+    two_key_dict.create(1)
+    assert DummyClassFce2.index == 1
+    two_key_dict.create(2)
+    assert DummyClassFce2.index == 2
