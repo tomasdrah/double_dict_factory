@@ -23,10 +23,11 @@ class TwoKeyDictFactory(Generic[FACTORY_KEY, TRIGGER_KEY, OBJECT],
         self._factories.pop(factory_key)
 
     def create(self, trigger_key: TRIGGER_KEY):
-        new_objects: dict[FACTORY_KEY, OBJECT] = {}
-        for key1, factory in self._factories.items():
-            new_objects[key1] = factory()
-        self._objects[trigger_key] = new_objects
+        if trigger_key not in self._objects:
+            new_objects: dict[FACTORY_KEY, OBJECT] = {}
+            for key1, factory in self._factories.items():
+                new_objects[key1] = factory()
+            self._objects[trigger_key] = new_objects
 
     def remove(self, trigger_key: TRIGGER_KEY):
         self._objects.pop(trigger_key)
