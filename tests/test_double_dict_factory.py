@@ -37,3 +37,12 @@ def test_created_once():
     assert DummyClassFce2.index == 1
     two_key_dict.create(2)
     assert DummyClassFce2.index == 2
+
+
+def test_get_will_create_trigger_key():
+    two_key_dict = TwoKeyDictFactory()
+    two_key_dict.add_factory(10, factory1)
+    two_key_dict.add_factory(20, factory2)
+    two_key_dict.create(1)
+    assert two_key_dict.get(1, 10) == 10
+    assert two_key_dict.get(2, 20) == 20

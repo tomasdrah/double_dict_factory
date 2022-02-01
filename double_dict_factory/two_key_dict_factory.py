@@ -33,4 +33,6 @@ class TwoKeyDictFactory(Generic[FACTORY_KEY, TRIGGER_KEY, OBJECT],
         self._objects.pop(trigger_key)
 
     def get(self, trigger_key: TRIGGER_KEY, factory_key: FACTORY_KEY) -> OBJECT:
+        if trigger_key not in self._objects:
+            self.create(trigger_key)
         return self._objects[trigger_key][factory_key]
