@@ -30,7 +30,8 @@ class TwoKeyDictFactory(Generic[FACTORY_KEY, TRIGGER_KEY, OBJECT],
             self._objects[trigger_key] = new_objects
 
     def remove(self, trigger_key: TRIGGER_KEY):
-        self._objects.pop(trigger_key)
+        if trigger_key in self._objects:
+            self._objects.pop(trigger_key)
 
     def get(self, trigger_key: TRIGGER_KEY, factory_key: FACTORY_KEY) -> OBJECT:
         if trigger_key not in self._objects:
